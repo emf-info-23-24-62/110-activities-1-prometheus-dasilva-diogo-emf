@@ -164,20 +164,47 @@ Créer des règles d'alertes qui détectent :
 
 **Réponse :**
 
-    (votre configuration ici)
+    ```
+    - alert: HighCPUUsage
+  expr: 100 - (avg(rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+  for: 1m
+  labels:
+    severity: warning
+  annotations:
+    summary: "CPU élevé"
+    description: "L'utilisation CPU est supérieure à 80% depuis plus de 1 minute"
+```
 
    
  - Mémoire élevée
 
 **Réponse :**
 
-    (votre configuration ici)
+    ```
+    - alert: HighMemoryUsage
+  expr: ((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) / node_memory_MemTotal_bytes * 100) > 80
+  for: 1m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Mémoire élevée"
+    description: "L'utilisation mémoire est supérieure à 80% depuis plus de 1 minute"
+```
 
  - Disk usage élevé
 
 **Réponse :**
 
-    (votre configuration ici)
+    ```
+    - alert: HighDiskUsage
+  expr: ((node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_avail_bytes{mountpoint="/"}) / node_filesystem_size_bytes{mountpoint="/"} * 100) > 80
+  for: 1m
+  labels:
+    severity: warning
+  annotations:
+    summary: "Disque presque plein"
+    description: "L'utilisation du disque / est supérieure à 80% depuis plus de 1 minute"
+```
 
 
 
